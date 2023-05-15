@@ -70,6 +70,7 @@ async def result(data: Tolietdata):
 @app.post('/Time_Period_Data02/')
 async def result(request: Request):
     user_data = await request.json()
+    print('user_data', user_data)
     # 处理用户数据
     # print('values:', user_data['values']['uid'])
     uid = user_data['values']['uid']
@@ -77,6 +78,7 @@ async def result(request: Request):
     # stop_time = user_data['values']['timeRange'][1]
     start_time = datetime.fromisoformat(user_data['values']['timeRange'][0].split(".")[0])
     stop_time = datetime.fromisoformat(user_data['values']['timeRange'][1].split(".")[0])
+    # username = user_data['values']['username']
     print(type(start_time))
     print('values:', start_time, stop_time, uid)
     # 返回处理结果
@@ -114,6 +116,7 @@ async def result(request:Request):
     col=db.users
     query = {"username": username}
     result = col.find_one(query)
+    print(username)
     print(result['password'])
     print(hash_password)
     #判断
@@ -121,20 +124,21 @@ async def result(request:Request):
         body = {
             "status":"ok",
             "type":type,
-            "currentAuthority":"zhang",
+            "currentAuthority":"Fzhang",
             }
         return body
     elif username =='wang' and result['password']==hash_password:
         body = {
             'status':'ok',
             'type':type,
-            'currentAuthority':'wang',
+            'currentAuthority':'Fwang',
         }
+        return body
     else:
         body = {
             'status':'error',
             'type':type,
-            'currentAuthority':'guest',
+            'currentAuthority':'Fguest',
         }
         return body
 
