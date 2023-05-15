@@ -118,13 +118,13 @@ def TrandomdataList(timeOfDays):
             tList.append(timestamp)
     return tList
   
-def MrandomdataList(times):
+def MrandomdataList(familynum,times,uid):
     mList=[]
     metadata={}
     for time in range(times):
-        metadata["from"]="toilet-1"
+        metadata["from"]="toilet-"+familynum
         metadata["type"]="urine"
-        metadata["uid"]=3
+        metadata["uid"]=uid
         mList.append(metadata)
     return mList
 

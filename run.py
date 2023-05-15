@@ -42,6 +42,7 @@ async def create_user(request: Request):
 
 
 class Tolietdata(BaseModel):
+    username:Optional[str] # =None
     starttime:datetime
     stoptime:datetime
     uid:Optional[int] # =None
@@ -63,7 +64,7 @@ async def result(data):
 @app.post('/Time_Period_Data/')
 async def result(data: Tolietdata):
     print('data', data)
-    return jsonable_encoder(opid.Query_Time_Period_Data(data.starttime, data.stoptime, data.uid))
+    return jsonable_encoder(opid.Query_Time_Period_Data(data.username,data.starttime, data.stoptime, data.uid))
 
 
 @app.post('/Time_Period_Data02/')
@@ -84,7 +85,7 @@ async def result(request: Request):
 
 @app.post('/Number_of_urination/')
 async def result(data: Tolietdata):
-    return jsonable_encoder(opid.Query_Number_of_urination(data.starttime, data.stoptime, data.uid))
+    return jsonable_encoder(opid.Query_Number_of_urination(data.username,data.starttime, data.stoptime, data.uid))
 
 
 @app.post('/Number_of_urination02/')
@@ -111,18 +112,24 @@ async def result(request:Request):
     client = pymongo.MongoClient("mongodb+srv://tomcat:cuityjs@cluster0.3ucwlxn.mongodb.net/?retryWrites=true&w=majority", server_api=ServerApi('1'))
     db = client.health
     col=db.users
-    query = {"username": "admin"}
+    query = {"username": username}
     result = col.find_one(query)
     print(result['password'])
     print(hash_password)
     #判断
-    if username == 'admin' and result['password']==hash_password:
+    if username == 'zhang' and result['password']==hash_password:
         body = {
             "status":"ok",
             "type":type,
-            "currentAuthority":"admin",
+            "currentAuthority":"zhang",
             }
         return body
+    elif username =='wang' and result['password']==hash_password:
+        body = {
+            'status':'ok',
+            'type':type,
+            'currentAuthority':'wang',
+        }
     else:
         body = {
             'status':'error',

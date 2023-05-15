@@ -6,10 +6,10 @@ import numpy as np
 from datetime import datetime
 
 
-def Upload_User_data():
+def Upload_User_data(familynum,Table,uid):
     times,timeOfDays= cg.numOfData(365)
     Tdata=cg.TrandomdataList(timeOfDays)
-    Mdata=cg.MrandomdataList(times)
+    Mdata=cg.MrandomdataList(familynum,times,uid)
     Udata=cg.UrandomdataList(times)
 
     toiletList=[]
@@ -24,7 +24,7 @@ def Upload_User_data():
     print(toiletList)
     client = pymongo.MongoClient("mongodb+srv://tomcat:cuityjs@cluster0.3ucwlxn.mongodb.net/?retryWrites=true&w=majority", server_api=ServerApi('1'))
     db = client.health
-    col=db.urinedata
+    col=db[Table]
     x=col.insert_many(toiletList)
     print(x.inserted_ids)
 
@@ -34,7 +34,7 @@ def Upload_Current_Onedata():
     now=datetime.now()
     Tdata=[]
     Tdata.append(datetime(now.year,now.month,now.day,now.hour,now.minute,now.second))
-    Mdata=cg.MrandomdataList(times)
+    Mdata=cg.MrandomdataList('c401',times,uid=1)
     Udata=cg.UrandomdataList(times)
     toilet = {}
     for time in range(times):
@@ -46,6 +46,6 @@ def Upload_Current_Onedata():
     print(toilet)
     client = pymongo.MongoClient("mongodb+srv://tomcat:cuityjs@cluster0.3ucwlxn.mongodb.net/?retryWrites=true&w=majority", server_api=ServerApi('1'))
     db = client.health
-    col=db.urinedata
+    col=db.Fzhang
     x=col.insert_one(toilet)
     return x

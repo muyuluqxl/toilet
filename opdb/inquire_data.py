@@ -4,7 +4,7 @@ import datetime
 
 client = pymongo.MongoClient("mongodb+srv://tomcat:cuityjs@cluster0.3ucwlxn.mongodb.net/?retryWrites=true&w=majority", server_api=ServerApi('1'))
 db = client.health
-col=db.urinedata
+
 
 '''
 starttime=datetime.datetime(2022,1,1,0,0,0)
@@ -12,8 +12,14 @@ stoptime=datetime.datetime(2023,1,1,0,0,0)
 uid
 
 '''
-def Query_Time_Period_Data(starttime,stoptime,uid=-1):
-    print(starttime,stoptime)
+def Query_Time_Period_Data(username,starttime,stoptime,uid=-1):
+    if username =='zhang':
+        FamilyTable = 'Fzhang'
+    elif username =='wang':
+        FamilyTable = 'Fwang'
+    else:
+        FamilyTable = 'guest'
+    col=db[FamilyTable]
     result=[]
     mgQueryStatementdic ={'timestamp': {'$gt':starttime,'$lt':stoptime}}
     if uid!=-1:
@@ -24,7 +30,14 @@ def Query_Time_Period_Data(starttime,stoptime,uid=-1):
     print("result",result)
     return result
     
-def Query_Number_of_urination(starttime,stoptime,uid): 
+def Query_Number_of_urination(username,starttime,stoptime,uid=-1): 
+    if username =='zhang':
+        FamilyTable = 'Fzhang'
+    elif username =='wang':
+        FamilyTable = 'Fwang'
+    else:
+        FamilyTable = 'guest'
+    col=db[FamilyTable]
     result=[]
     pipeline = [
         {'$match':{
