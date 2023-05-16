@@ -43,8 +43,8 @@ async def create_user(request: Request):
 
 class Tolietdata(BaseModel):
     username:Optional[str] # =None
-    starttime:datetime
-    stoptime:datetime
+    starttime:datetime=datetime(2022,1,1,0,0,0)
+    stoptime:datetime=datetime(2022,2,1,0,0,0)
     uid:Optional[int] # =None
 
 

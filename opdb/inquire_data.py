@@ -15,15 +15,18 @@ uid
 def Query_Time_Period_Data(username,starttime,stoptime,uid=-1):
     if username =='zhang':
         FamilyTable = 'Fzhang'
+        toiletid = 'toilet-c401'
     elif username =='wang':
         FamilyTable = 'Fwang'
+        toiletid = 'toilet-c402'
     else:
         FamilyTable = 'guest'
     col=db[FamilyTable]
+    print(FamilyTable)
     result=[]
     mgQueryStatementdic ={'timestamp': {'$gt':starttime,'$lt':stoptime}}
     if uid!=-1:
-        mgQueryStatementdic['metadata'] = {'from': 'toilet-1', 'type': 'urine', 'uid': uid}
+        mgQueryStatementdic['metadata'] = {'from': toiletid, 'type': 'urine', 'uid': uid}
     #print(mgQueryStatementdic)
     for cursor in col.find(mgQueryStatementdic):
         result.append(cursor)
@@ -33,8 +36,10 @@ def Query_Time_Period_Data(username,starttime,stoptime,uid=-1):
 def Query_Number_of_urination(username,starttime,stoptime,uid=-1): 
     if username =='zhang':
         FamilyTable = 'Fzhang'
+        toiletid = 'toilet-c401'
     elif username =='wang':
         FamilyTable = 'Fwang'
+        toiletid = 'toilet-c402'
     else:
         FamilyTable = 'guest'
     col=db[FamilyTable]
@@ -42,7 +47,7 @@ def Query_Number_of_urination(username,starttime,stoptime,uid=-1):
     pipeline = [
         {'$match':{
          'timestamp':{'$gt':starttime,'$lt':stoptime},
-         'metadata': {'from': 'toilet-1', 'type': 'urine', 'uid': uid}
+         'metadata': {'from': toiletid, 'type': 'urine', 'uid': uid}
          }},
         {'$group': {
          '_id':{'$dateToString':{'format':"%Y-%m-%d",'date':"$timestamp"}},
